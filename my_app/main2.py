@@ -1,7 +1,7 @@
 import customtkinter
 
 # Global appearance settings (optional)
-customtkinter.set_appearance_mode("System")  # "Light" or "Dark" or "System"
+customtkinter.set_appearance_mode("Dark")  # "Light" or "Dark" or "System"
 customtkinter.set_default_color_theme("blue")  # "blue", "green", "dark-blue", etc.
 
 # Create the main window
