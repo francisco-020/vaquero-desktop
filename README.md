@@ -34,5 +34,6 @@ source venv/bin/activate
 ### 4. Install all required packages from the project
 pip install -r requirements.txt
 
-
+### 5. To run the app cd into your root folder and run 
+python -m my_app.main
 
