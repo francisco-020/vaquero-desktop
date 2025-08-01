@@ -1,28 +1,36 @@
-from tkinter import*
+# main.py
+import customtkinter as ctk
+from .auth.login_window import LoginWindow
+from .views.main_dashboard import MainDashboard  
 
-#create the root widget 
-root = Tk()
-root.title("Desktop Summer App")
+class App(ctk.CTk):
+    def __init__(self):
+        super().__init__()
+        self.title("Vaquero Marketplace")
+        self.geometry("800x600")  # match your dashboard size
 
+        self.frames = {}
 
-#create input widget 
-item = Entry (root)
-item.insert(0, "First Name: ")
+        # ✅ Initialize login page
+        login = LoginWindow(self, self)
+        login.pack(fill="both", expand=True)
+        self.frames["LoginWindow"] = login
 
-#Radio Buttons 
-var = IntVar()
-Radiobutton(root, text="Option1",variable=var,value=1, command=lambda:rbutton(var.get())).grid(row=0,column=1)
-Radiobutton(root, text="Option2",variable=var,value=2, command=lambda:rbutton(var.get())).grid(row=1,column=1)
-Radiobutton(root, text="Option3",variable=var,value=3, command=lambda:rbutton(var.get())).grid(row=2,column=1)
+        # ✅ Initialize dashboard page
+        dashboard = MainDashboard(self, self)
+        dashboard.pack_forget()  # don't show yet
+        self.frames["Dashboard"] = dashboard
 
-def rbutton(value):
-    labelR = Label(root,text=var.get())
-    labelR.grid(row=4,column=0)
+    def show_frame(self, frame_name):
+        for frame in self.frames.values():
+            frame.pack_forget()
 
+        frame = self.frames.get(frame_name)
+        if frame:
+            frame.pack(fill="both", expand=True)
+        else:
+            print(f"No frame found: {frame_name}")
 
-
-#Widget Packing 
-item.grid(row=3, column=0)
-
-
-root.mainloop()
+if __name__ == "__main__":
+    app = App()
+    app.mainloop()
