@@ -32,10 +32,12 @@ class MainDashboard(ctk.CTkFrame):
         self.tabs.pack(padx=10, pady=(10, 10), expand=True)
 
         # Add tabs
-        self.home_tab = self.tabs.add("🏠 Home / Feed")
-        self.post_tab = self.tabs.add("➕ Add Listing")
+        self.home_tab = self.tabs.add("🏠 Home Feed")
+        self.details_tab = self.tabs.add("👤My Dashboard")
         self.bookmarks_tab = self.tabs.add("🖤 Bookmarked")
-        self.details_tab = self.tabs.add("👤Listing Details")
+        self.post_tab = self.tabs.add("➕ Add Listing")
+       
+       
 
         # Populate tabs
         HomeFeedTab(self.home_tab)
