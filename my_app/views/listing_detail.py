@@ -1,6 +1,8 @@
 import customtkinter as ctk
 
-class ListingDetailTab:
+class ListingDetailTab(ctk.CTkFrame):
     def __init__(self, parent):
-        label = ctk.CTkLabel(parent, text="My Listings Detail Page (Coming Soon)", font=("Arial", 16))
+        super().__init__(parent,fg_color="white")
+
+        label = ctk.CTkLabel(self, text="My Listings Detail Page (Coming Soon)", font=("Arial", 16,"bold"))
         label.pack(pady=20)

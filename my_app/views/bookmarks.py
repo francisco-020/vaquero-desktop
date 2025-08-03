@@ -1,6 +1,8 @@
 import customtkinter as ctk
 
-class BookmarksTab:
+class BookmarksTab(ctk.CTkFrame):
     def __init__(self, parent):
-        label = ctk.CTkLabel(parent, text="Bookmarks Page (Coming Soon)", font=("Arial", 16))
+        super().__init__(parent,fg_color="white")
+
+        label = ctk.CTkLabel(self, text="Bookmarks Page (Coming Soon)", font=("Arial", 16,"bold"))
         label.pack(pady=20)
