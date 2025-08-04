@@ -14,28 +14,51 @@ class PostListingTab(ctk.CTkFrame):
         self.label = ctk.CTkLabel(self, text="Post a New Listing", font=("Arial", 16, "bold"))
         self.label.pack(pady=10)
 
-        self.title_entry = ctk.CTkEntry(self, placeholder_text="Title")
+        self.title_entry = ctk.CTkEntry(self, placeholder_text="Title", width=200, border_color="black",border_width=2)
         self.title_entry.pack(pady=5)
 
-        self.description_entry = ctk.CTkEntry(self, placeholder_text="Description")
-        self.description_entry.pack(pady=5)
 
-        self.price_entry = ctk.CTkEntry(self, placeholder_text="Price")
+        self.description_entry = ctk.CTkTextbox(self, height=60,width=200,border_color="black",border_width=2)
+        self.description_entry.insert("1.0", "Description")
+        self.description_entry.configure(text_color="gray",fg_color="white")
+        self.description_entry.pack(pady=5)
+        self.description_entry.bind("<FocusIn>", self.clear_placeholder)
+        self.description_entry.bind("<FocusOut>", self.restore_placeholder)
+
+
+        self.price_entry = ctk.CTkEntry(self, placeholder_text="Price", width=200,border_color="black")
         self.price_entry.pack(pady=5)
 
-        self.category_entry = ctk.CTkEntry(self, placeholder_text="Category")
+        self.category_entry = ctk.CTkEntry(self, placeholder_text="Category", width=200,border_color="black")
         self.category_entry.pack(pady=5)
 
-        self.location_entry = ctk.CTkEntry(self, placeholder_text="Location")
+        self.location_entry = ctk.CTkEntry(self, placeholder_text="Location", width=200,border_color="black")
         self.location_entry.pack(pady=5)
 
         self.image_path = None
 
-        self.select_image_btn = ctk.CTkButton(self, text="Select Image", command=self.select_image)
+        self.select_image_btn = ctk.CTkButton(
+            self, border_color="black", fg_color="#ec6f05", hover_color="#dc6600", text="Select Image", width=250, command=self.select_image
+        )
         self.select_image_btn.pack(pady=5)
 
-        self.submit_btn = ctk.CTkButton(self, text="Post Listing", command=self.post_listing)
+        self.submit_btn = ctk.CTkButton(
+            self, border_color="black", fg_color="#ec6f05", hover_color="#dc6600", text="Post Listing", width=250, command=self.post_listing
+        )
         self.submit_btn.pack(pady=15)
+
+    def clear_placeholder(self, event):
+        current_text = self.description_entry.get("1.0", "end-1c").strip()
+        if current_text == "Description":
+            self.description_entry.delete("1.0", "end")
+            self.description_entry.configure(text_color="black")
+
+    def restore_placeholder(self, event):
+        current_text = self.description_entry.get("1.0", "end-1c").strip()
+        if not current_text:
+            self.description_entry.insert("1.0", "Description")
+            self.description_entry.configure(text_color="gray")
+
 
     def select_image(self):
         file_path = filedialog.askopenfilename(filetypes=[("Image Files", "*.png *.jpg *.jpeg *.gif")])
@@ -54,7 +77,6 @@ class PostListingTab(ctk.CTkFrame):
 
         user_id = user.id
         display_name = user.user_metadata.get("full_name") or user.email or "Anonymous"
-
         access_token = session.access_token
 
         image_url = ""
@@ -72,11 +94,16 @@ class PostListingTab(ctk.CTkFrame):
                 print("Price is empty.")
                 return
 
+            # Get and clean description
+            description_text = self.description_entry.get("1.0", "end-1c").strip()
+            if description_text == "Description":
+                description_text = ""
+
             listing = {
                 "user_id": str(user_id),
                 "display_name": str(display_name),
                 "title": self.title_entry.get().strip(),
-                "description": self.description_entry.get().strip(),
+                "description": description_text,
                 "price": float(price_value),
                 "category": self.category_entry.get().strip(),
                 "image_url": image_url,
@@ -91,12 +118,14 @@ class PostListingTab(ctk.CTkFrame):
             print("Supabase response:", response)
 
             if response.data:
-                print("✅ Listing posted successfully.")
+                print("Listing posted successfully.")
                 messagebox.showinfo("Success", "Listing posted successfully!")
 
                 # Clear form
                 self.title_entry.delete(0, 'end')
-                self.description_entry.delete(0, 'end')
+                self.description_entry.delete("1.0", "end")
+                self.description_entry.insert("1.0", "Description")
+                self.description_entry.configure(text_color="gray")
                 self.price_entry.delete(0, 'end')
                 self.category_entry.delete(0, 'end')
                 self.location_entry.delete(0, 'end')

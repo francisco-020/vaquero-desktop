@@ -8,11 +8,11 @@ class HomeFeedTab(ctk.CTkFrame):
     def __init__(self, parent):
         super().__init__(parent, fg_color="white")
 
-        label = ctk.CTkLabel(self, text="Home Feed (All Active Listings)", font=("Arial", 16, "bold"))
+        label = ctk.CTkLabel(self, text="Active Listings", font=("Arial", 16, "bold"))
         label.pack(pady=10)
 
         # Add refresh button
-        self.refresh_button = ctk.CTkButton(self, text="Refresh Listings", command=self.load_listings)
+        self.refresh_button = ctk.CTkButton(self,fg_color="#ec6f05",hover_color="#dc6600", text="Refresh Listings", command=self.load_listings)
         self.refresh_button.pack(pady=5)
 
         self.scrollable_frame = ctk.CTkScrollableFrame(self, width=760, height=500)

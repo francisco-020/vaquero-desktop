@@ -29,18 +29,18 @@ class LoginWindow(ctk.CTkFrame):
 
         # Buttons
         self.main_button = ctk.CTkButton(self, text="Log In", width=200,
-                                         fg_color="#ec6f05", hover_color="#d95e00",
+                                         fg_color="#ec6f05", hover_color="#dc6600",
                                          border_color="black", border_width=2,
                                          command=self.login_or_register)
 
         self.switch_button = ctk.CTkButton(self, text="Create New Account", width=200,
                                            fg_color="white", text_color="black",
-                                           border_color="black", border_width=2,hover_color="#ec6f05",
+                                           border_color="black", border_width=2,hover_color="#dc6600",
                                            command=self.toggle_form)
 
         self.google_button = ctk.CTkButton(self, text="Continue with Google", width=200,
                                            fg_color="white", text_color="black",
-                                           hover_color="#ec6f05",border_color="black", border_width=2,
+                                           hover_color="#dc6600",border_color="black", border_width=2,
                                            command=self.google_sign_in)
 
         self.render_login_form()
