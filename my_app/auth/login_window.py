@@ -1,6 +1,6 @@
 import customtkinter as ctk
 from tkinter import messagebox
-import webbrowser
+import webbrowser # importing to work with "sign in with google"
 from lib.supabase_Client import supabase
 from PIL import Image
 
@@ -12,6 +12,8 @@ class LoginWindow(ctk.CTkFrame):
 
         self.configure(fg_color="white")
         logo_image = ctk.CTkImage(light_image=Image.open("images/UTRGV Logo.png"), size=(32, 32))
+        self.center_image = ctk.CTkImage(light_image=Image.open("images/Vaquero Desktop App Landing Page Image.jpg"), size=(500, 300))
+
         self.is_registering = False
 
         self.sidebar = ctk.CTkFrame(self, width=80, height=1000, fg_color="#ec6f05", corner_radius=0)
@@ -20,6 +22,9 @@ class LoginWindow(ctk.CTkFrame):
         self.top_title = ctk.CTkLabel(self,image=logo_image, text=" Welcome to Vaquero Marketplace",
                                       text_color="#ec6f05", font=("Georgia", 30, "bold"),compound="left")
         self.top_title.pack(padx=25, pady=70)
+        self.image_label = ctk.CTkLabel(self, image=self.center_image, text="")  # text="" hides the default label text
+        self.image_label.pack(pady=(0, 40))
+
 
         # Shared form fields
         self.first_name_entry = ctk.CTkEntry(self, placeholder_text="First Name", width=175)

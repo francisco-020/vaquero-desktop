@@ -7,18 +7,18 @@ class App(ctk.CTk):
     def __init__(self):
         super().__init__()
         self.title("Vaquero Marketplace")
-        self.geometry("800x600")  # match your dashboard size
+        self.geometry("800x1000")  
 
         self.frames = {}
 
-        # ✅ Initialize login page
+        # Initialize login page
         login = LoginWindow(self, self)
         login.pack(fill="both", expand=True)
         self.frames["LoginWindow"] = login
 
-        # ✅ Initialize dashboard page
+        # Initialize dashboard page
         dashboard = MainDashboard(self, self)
-        dashboard.pack_forget()  # don't show yet
+        dashboard.pack_forget()  
         self.frames["Dashboard"] = dashboard
 
     def show_frame(self, frame_name):
