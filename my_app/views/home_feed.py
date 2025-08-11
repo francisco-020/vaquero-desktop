@@ -3,6 +3,9 @@ from PIL import Image, ImageTk
 import requests
 from io import BytesIO
 from lib.supabase_Client import supabase  # adjust if your path differs
+from my_app.auth.session import get_user_id
+from tkinter import messagebox
+
 
 class HomeFeedTab(ctk.CTkFrame):
     def __init__(self, parent):
@@ -50,11 +53,16 @@ class HomeFeedTab(ctk.CTkFrame):
         display_name = listing.get("display_name", "Anonymous")
         image_url = listing.get("image_url")
 
+        
+
         # Top info block
         ctk.CTkLabel(container, text=title, font=("Arial", 14, "bold")).pack(anchor="w", padx=10, pady=(8, 0))
         ctk.CTkLabel(container, text=f"Posted by: {display_name}", font=("Arial", 11, "italic")).pack(anchor="w", padx=10)
         ctk.CTkLabel(container, text=f"${price} | {location}", font=("Arial", 12)).pack(anchor="w", padx=10)
         ctk.CTkLabel(container, text=desc, wraplength=700, font=("Arial", 12)).pack(anchor="w", padx=10, pady=(0, 5))
+
+        #Bookmark Button
+        ctk.CTkButton(container, text="Bookmark", command=lambda id=listing["id"]: self.add_bookmark(id)).pack(anchor="w", padx=10, pady=(0, 5))
 
         # Image display
         if image_url:
@@ -72,3 +80,24 @@ class HomeFeedTab(ctk.CTkFrame):
         pil_image = Image.open(BytesIO(img_data))
         pil_image = pil_image.resize((300, 200))  # resize as needed
         return ImageTk.PhotoImage(pil_image)
+        
+
+    def add_bookmark(self, listing_id):
+        user_id = get_user_id()
+        if not user_id:
+            messagebox.showerror("Error", "You must be logged in to bookmark listings.")
+            return
+
+        try:
+            # Insert bookmark record
+            response = supabase.table("Bookmarks").insert({
+                "user_id": user_id,
+                "listing_id": listing_id
+            }).execute()
+
+            if response.status_code == 201:
+                messagebox.showinfo("Bookmarked", "Listing added to your bookmarks!")
+            else:
+                messagebox.showerror("Error", "Failed to add bookmark. It might already be bookmarked.")
+        except Exception as e:
+            messagebox.showerror("Error", f"An error occurred: {e}")

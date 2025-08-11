@@ -3,6 +3,7 @@ from tkinter import messagebox
 import webbrowser
 from lib.supabase_Client import supabase
 from PIL import Image
+from my_app.auth.session import set_user_id
 
 
 class LoginWindow(ctk.CTkFrame):
@@ -102,8 +103,13 @@ class LoginWindow(ctk.CTkFrame):
             })
 
             if response.user:
+                set_user_id(response.user.id)  
                 messagebox.showinfo("Login Success", f"Welcome {email}!")
+                dashboard = self.controller.frames["Dashboard"]
                 self.controller.show_frame("Dashboard")
+                dashboard.pages["dashboard"].load_my_listings()
+                dashboard.pages["bookmarks"].load_bookmarks()
+
             else:
                 messagebox.showerror("Login Failed", "Invalid credentials.")
         except Exception as e:
@@ -138,3 +144,4 @@ class LoginWindow(ctk.CTkFrame):
     def google_sign_in(self):
         url = "https://krsuokkfieczcaxmzisq.supabase.co/auth/v1/authorize?provider=google"
         webbrowser.open(url)
+
