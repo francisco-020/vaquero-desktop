@@ -3,6 +3,8 @@ import customtkinter as ctk
 from .auth.login_window import LoginWindow
 from .views.main_dashboard import MainDashboard  
 
+ctk.set_appearance_mode("light")  # or "dark"
+
 class App(ctk.CTk):
     def __init__(self):
         super().__init__()

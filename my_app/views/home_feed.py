@@ -89,15 +89,17 @@ class HomeFeedTab(ctk.CTkFrame):
             return
 
         try:
-            # Insert bookmark record
+            # Insert bookmark record (Supabase Python client returns .data, not .status_code)
             response = supabase.table("Bookmarks").insert({
                 "user_id": user_id,
                 "listing_id": listing_id
             }).execute()
 
-            if response.status_code == 201:
+            if response.data:  # If insert was successful, there will be data
                 messagebox.showinfo("Bookmarked", "Listing added to your bookmarks!")
             else:
                 messagebox.showerror("Error", "Failed to add bookmark. It might already be bookmarked.")
+
         except Exception as e:
             messagebox.showerror("Error", f"An error occurred: {e}")
+

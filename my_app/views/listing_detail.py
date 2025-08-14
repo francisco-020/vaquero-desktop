@@ -15,7 +15,11 @@ class ListingDetailTab(ctk.CTkFrame):
 
         ctk.CTkLabel(self, text="My Listings", font=("Arial", 16, "bold")).pack(pady=10)
         self.scrollable_frame = ctk.CTkScrollableFrame(self, width=760, height=500)
-        self.scrollable_frame.pack(pady=10)
+        self.scrollable_frame.pack(pady=5)
+
+        # Add refresh button
+        self.refresh_button = ctk.CTkButton(self,fg_color="#ec6f05",hover_color="#dc6600", text="Refresh My Listings", command=self.load_my_listings)
+        self.refresh_button.pack(pady=10)
 
         
 
