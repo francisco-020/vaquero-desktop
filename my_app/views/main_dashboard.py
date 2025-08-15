@@ -4,6 +4,11 @@ from .post_listing import PostListingTab
 from .bookmarks import BookmarksTab
 from .listing_detail import ListingDetailTab
 from PIL import Image
+from tkinter import messagebox
+import requests
+import os
+from lib.supabase_Client import supabase
+from my_app.auth.session import get_user_id
 
 
 class MainDashboard(ctk.CTkFrame):
@@ -30,16 +35,21 @@ class MainDashboard(ctk.CTkFrame):
             text_color="black", command=self.logout
         ).pack(side="right", padx=30, pady=30)
 
+        ctk.CTkButton(
+            top_frame, text="Delete Account", width=120, fg_color="red", hover_color="#b30000",
+            text_color="white", command=self.delete_account
+        ).pack(side="right", padx=(0, 10), pady=30)
+
         # Navigation Menu 
         nav_frame = ctk.CTkFrame(self, fg_color="white", height=50)
         nav_frame.pack(fill="x", pady=(5, 20))
 
         self.nav_buttons = {}
         nav_items = [
-            ("🏠 Home Feed", "home"),
-            ("👤 My Dashboard", "dashboard"),
-            ("🖤 Bookmarked", "bookmarks"),
-            ("➕ Add Listing", "add")
+            ("Home Feed", "home"),
+            ("My Dashboard", "dashboard"),
+            ("Bookmarked", "bookmarks"),
+            ("Add Listing", "add")
         ]
 
         for text, key in nav_items:
@@ -81,3 +91,48 @@ class MainDashboard(ctk.CTkFrame):
     def logout(self):
         print("Logging out...")
         self.controller.show_frame("LoginWindow")
+
+    def delete_account(self):
+
+        user_id = get_user_id()
+        if not user_id:
+            messagebox.showerror("Error", "You must be logged in to delete your account.")
+            return
+
+        confirm = messagebox.askyesno(
+            "Confirm Deletion",
+            "Are you sure you want to delete your account? This cannot be undone."
+        )
+        if not confirm:
+            return
+
+        try:
+            # Delete from Supabase Auth
+            service_role_key = os.getenv("SUPABASE_SERVICE_ROLE_KEY")
+            url = f"{os.getenv('SUPABASE_URL')}/auth/v1/admin/users/{user_id}"
+
+            headers = {
+                "apikey": service_role_key,
+                "Authorization": f"Bearer {service_role_key}",
+                "Content-Type": "application/json"
+            }
+
+            response = requests.delete(url, headers=headers)
+
+            if response.status_code == 204:
+                messagebox.showinfo("Deleted", "Your account has been permanently deleted.")
+                self.controller.show_frame("LoginWindow")
+                return
+            elif 200 <= response.status_code < 300:
+                messagebox.showinfo("Deleted", "Your account has been deleted.")
+                self.controller.show_frame("LoginWindow")
+                return
+            else:
+                messagebox.showerror(
+                    "Error",
+                    f"Failed to delete account: {response.status_code} - {response.text}"
+                )
+
+
+        except Exception as e:
+            messagebox.showerror("Error", f"An error occurred: {e}")
