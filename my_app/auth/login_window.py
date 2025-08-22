@@ -9,17 +9,21 @@ from my_app.auth.session import set_user_id
 class LoginWindow(ctk.CTkFrame):
     def __init__(self, master, controller):
         super().__init__(master)
-        self.controller = controller
+        self.controller = controller # reference to the main app controller (manages page switching)
 
+        # Setting the background color
         self.configure(fg_color="white")
-        logo_image = ctk.CTkImage(light_image=Image.open("images/UTRGV Logo.png"), size=(32, 32))
-        self.is_registering = False
 
+        # Load UTRGV logo for header
+        logo_image = ctk.CTkImage(light_image=Image.open("images/UTRGV Logo.png"), size=(32, 32))
+        self.is_registering = False # tracks whether the form is login or register mode
+
+        # Sidebar (orange bar on the right side)
         self.sidebar = ctk.CTkFrame(self, width=80, height=1000, fg_color="#ec6f05", corner_radius=0)
         self.sidebar.place(relx=1.0, rely=0, anchor="ne")
 
-        self.top_title = ctk.CTkLabel(self,image=logo_image, text=" Welcome to Vaquero Marketplace",
-                                      text_color="#ec6f05", font=("Georgia", 30, "bold"),compound="left")
+        # App title with logo
+        self.top_title = ctk.CTkLabel(self,image=logo_image, text=" Welcome to Vaquero Marketplace", text_color="#ec6f05", font=("Georgia", 30, "bold"),compound="left")
         self.top_title.pack(padx=25, pady=70)
 
         # Shared form fields
@@ -28,24 +32,25 @@ class LoginWindow(ctk.CTkFrame):
         self.email_entry = ctk.CTkEntry(self, placeholder_text="Email", width=175)
         self.password_entry = ctk.CTkEntry(self, placeholder_text="Password", show="*", width=175)
 
-        # Buttons
+        # Main action button (Log In OR Register depending on mode)
         self.main_button = ctk.CTkButton(self, text="Log In", width=200,
                                          fg_color="#ec6f05", hover_color="#dc6600",
                                          border_color="black", border_width=2,
                                          command=self.login_or_register)
 
+        # Switch form button (toggles between login and register screens)
         self.switch_button = ctk.CTkButton(self, text="Create New Account", width=200,
                                            fg_color="white", text_color="black",
                                            border_color="black", border_width=2,hover_color="#dc6600",
                                            command=self.toggle_form)
 
-        self.google_button = ctk.CTkButton(self, text="Continue with Google", width=200,
-                                           fg_color="white", text_color="black",
-                                           hover_color="#dc6600",border_color="black", border_width=2,
-                                           command=self.google_sign_in)
-
+        # Start with login form displayed 
         self.render_login_form()
 
+
+# Form rendering logic:
+
+    # Show login form layout
     def render_login_form(self):
         self.clear_form()
 
@@ -53,12 +58,12 @@ class LoginWindow(ctk.CTkFrame):
         self.password_entry.pack(pady=10)
         self.main_button.configure(text="Log In")
         self.main_button.pack(pady=15)
-        self.google_button.pack(pady=5)
         self.switch_button.configure(text="Create new account")
         self.switch_button.pack(pady=10)
 
         self.is_registering = False
 
+    # Show register form layout
     def render_register_form(self):
         self.clear_form()
 
@@ -74,24 +79,28 @@ class LoginWindow(ctk.CTkFrame):
         
         self.is_registering = True
 
+    # Hides all form fields and buttons (before re-rendering)
     def clear_form(self):
         for widget in [self.first_name_entry, self.last_name_entry,
                        self.email_entry, self.password_entry,
-                       self.main_button, self.switch_button, self.google_button]:
+                       self.main_button, self.switch_button]:
             widget.pack_forget()
 
+    # Switch between login and register forms
     def toggle_form(self):
         if self.is_registering:
             self.render_login_form()
         else:
             self.render_register_form()
 
+    # Calls the appropriate function depending on mode
     def login_or_register(self):
         if self.is_registering:
             self.register()
         else:
             self.login()
 
+    # Attempt login with Supabase email/password auth
     def login(self):
         email = self.email_entry.get()
         password = self.password_entry.get()
@@ -107,14 +116,15 @@ class LoginWindow(ctk.CTkFrame):
                 messagebox.showinfo("Login Success", f"Welcome {email}!")
                 dashboard = self.controller.frames["Dashboard"]
                 self.controller.show_frame("Dashboard")
-                dashboard.pages["dashboard"].load_my_listings()
-                dashboard.pages["bookmarks"].load_bookmarks()
+                dashboard.pages["dashboard"].load_my_listings() # Loads my listings in dashboard page until logged in 
+                dashboard.pages["bookmarks"].load_bookmarks() # Loads bookmarks in bookmarks page until logged in
 
             else:
                 messagebox.showerror("Login Failed", "Invalid credentials.")
         except Exception as e:
             messagebox.showerror("Login Error", str(e))
 
+    # Attempt user registration with Supabase
     def register(self):
         email = self.email_entry.get()
         password = self.password_entry.get()
@@ -140,8 +150,3 @@ class LoginWindow(ctk.CTkFrame):
                 messagebox.showerror("Sign Up Failed", "Unable to create account.")
         except Exception as e:
             messagebox.showerror("Sign Up Error", str(e))
-
-    def google_sign_in(self):
-        url = "https://krsuokkfieczcaxmzisq.supabase.co/auth/v1/authorize?provider=google"
-        webbrowser.open(url)
-

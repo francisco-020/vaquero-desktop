@@ -1,4 +1,4 @@
-# my_app/auth/session.py
+# Functions used to get user id for Bookmark and My Listings page
 current_user_id = None
 
 def set_user_id(uid):
