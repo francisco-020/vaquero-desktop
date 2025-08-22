@@ -5,6 +5,29 @@ from .views.main_dashboard import MainDashboard  # import dashboard view
 
 # Set global appearance for the app
 ctk.set_appearance_mode("light")  
+ORANGE = "#EC6F05"
+ORANGE_HOVER = "#DC6600"
+WHITE = "#FFFFFF"
+
+def _patch_orange_defaults():
+    _orig_btn_init = ctk.CTkButton.__init__
+    def _orange_btn_init(self, *args, **kwargs):
+        kwargs.setdefault("fg_color", ORANGE)
+        kwargs.setdefault("hover_color", ORANGE_HOVER)
+        kwargs.setdefault("text_color", WHITE)
+        return _orig_btn_init(self, *args, **kwargs)
+    ctk.CTkButton.__init__ = _orange_btn_init
+
+    _orig_opt_init = ctk.CTkOptionMenu.__init__
+    def _orange_opt_init(self, *args, **kwargs):
+        kwargs.setdefault("fg_color", ORANGE)              
+        kwargs.setdefault("button_color", ORANGE)          
+        kwargs.setdefault("button_hover_color", ORANGE_HOVER)
+        kwargs.setdefault("text_color", WHITE)
+        return _orig_opt_init(self, *args, **kwargs)
+    ctk.CTkOptionMenu.__init__ = _orange_opt_init
+
+_patch_orange_defaults()
 
 # Main application class, handles switching between Login and Dashboard pages
 class App(ctk.CTk):
