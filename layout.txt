@@ -1,0 +1,31 @@
+vaquero-desktop/
+│
+├── images/ (static assets)
+│ └── UTRGV Logo.png
+│
+├── lib/ (helpers / SDKs)
+│ └── supabase_Client.py (Supabase client wrapper)
+│
+├── my_app/ (desktop app package)
+│ ├── init.py
+│ ├── main.py (app entry point)
+│ │
+│ ├── auth/ (authentication)
+│ │ ├── init.py
+│ │ ├── login_window.py (login UI)
+│ │ └── session.py (session state)
+│ │
+│ └── views/ (feature views/screens)
+│ ├── init.py
+│ ├── bookmarks.py
+│ ├── home_feed.py
+│ ├── listing_detail.py
+│ ├── main_dashboard.py
+│ └── post_listing.py
+│
+├── .gitignore
+├── README.md
+├── Vaquero Market Place Desktop App Technical Document.pdf
+├── requirements.txt
+├── layout.txt
+└── upload_image.py (image upload utility)
