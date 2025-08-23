@@ -39,7 +39,7 @@ python -m my_app.main
 - celesterios0211: Celeste Rios
 - francisco-020: Alan Sandoval
 - tfrhyde: Carlos Herrera
-- Troyrodz: Troy Rodriguez
+- Troyrodz/Troylicious: Troy Rodriguez
 
 ## Contributors and Credit
 - Celeste Rios: Partially worked on the backend of the desktop and web version, worked on the frontend of the desktop version, testing of both versions, and a portion of the planning of the project.
