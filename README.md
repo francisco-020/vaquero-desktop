@@ -18,6 +18,12 @@ git clone https://github.com/francisco-020/vaquero-desktop.git
 ### 2. Move into the project folder
 cd vaquero-desktop
 
+### (If .env.local file does not exist)
+Create .env.local file in the same directory and fill sections below with your required keys
+- NEXT_PUBLIC_SUPABASE_URL= 
+- NEXT_PUBLIC_SUPABASE_ANON_KEY=
+- SUPABASE_SERVICE_ROLE_KEY=
+
 ### 3. Create and activate virtual environment
 python -m venv venv
 
