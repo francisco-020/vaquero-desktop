@@ -35,13 +35,13 @@ pip install -r requirements.txt
 ### 5. To run the app cd into your root folder and run 
 python -m my_app.main
 
-### Collaborator Github User Association
+## Collaborator Github User Association
 - celesterios0211: Celeste Rios
 - francisco-020: Alan Sandoval
 - tfrhyde: Carlos Herrera
 - Troyrodz: Troy Rodriguez
 
-### Contributors and Credit
+## Contributors and Credit
 - Celeste Rios: Partially worked on the backend of the desktop and web version, worked on the frontend of the desktop version, testing of both versions, and a portion of the planning of the project.
 - Alan Sandoval: Worked developing both the backends of web and desktop version of the project, worked on the frontend structure of the web version, testing of both versions, and a portion of the planning of the project.
 - Carlos Herrera: Initial work on the web version and setting up the database initially, worked on the frontend of web version, and a portion of the planning of the project.
